@@ -22,7 +22,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('migrate-fresh', function () {
     // return Profile::all();
-    Artisan::call('migrate:fresh');
+    Artisan::call('migrate:fresh',[
+        '--force' => true
+    ]);
     return [
         'message'=>'Migrated.'
     ];
