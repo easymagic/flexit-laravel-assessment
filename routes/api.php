@@ -2,6 +2,7 @@
 
 use App\Models\Profile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,6 +19,16 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('migrate-fresh', function () {
+    // return Profile::all();
+    Artisan::call('migrate:fresh');
+    return [
+        'message'=>'Migrated.'
+    ];
+
+});
+
 
 Route::get('profiles', function () {
     return Profile::all();
