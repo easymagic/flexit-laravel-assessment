@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Tweet;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class TweetController extends Controller
 {
@@ -15,6 +16,9 @@ class TweetController extends Controller
     public function index()
     {
         //
+        return [
+            'data'=>Tweet::query()->get()
+        ];
     }
 
     /**
@@ -36,6 +40,23 @@ class TweetController extends Controller
     public function store(Request $request)
     {
         //
+        try {
+
+            $data = request()->validate([
+                'user_id'=>'required',
+                'tweet'=>'required'
+            ]);
+
+            $new = Tweet::create($data);
+
+            return [
+                'message'=>'New tweet posted successfully.',
+                'error'=>false
+            ];
+
+        } catch (ValidationException $th) {
+          return $this->getValidationErrors($th);
+        }
     }
 
     /**
@@ -67,9 +88,36 @@ class TweetController extends Controller
      * @param  \App\Models\Tweet  $tweet
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Tweet $tweet)
+    public function update(Request $request, $id)
     {
         //
+        try {
+
+            $data = request()->validate([
+                'user_id'=>'required',
+                'tweet'=>'required'
+            ]);
+
+            $old = Tweet::query()->find($id);
+
+            if ($old->user_id != $data['user_id']){
+               return [
+                   'message'=>'Failed to update (Tweet not created by you)',
+                   'error'=>true
+               ];
+            }
+
+            $old->update($data);
+
+            return [
+                'message'=>'Tweet updated successfully.',
+                'error'=>false
+            ];
+
+        } catch (ValidationException $th) {
+          return $this->getValidationErrors($th);
+        }
+
     }
 
     /**
@@ -78,8 +126,35 @@ class TweetController extends Controller
      * @param  \App\Models\Tweet  $tweet
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Tweet $tweet)
+    public function destroy($id)
     {
         //
+        try {
+            $data = request()->validate([
+                'user_id'=>'required'
+            ]);
+
+            $old = Tweet::query()->find($id);
+
+            if ($old->user_id != $data['user_id']){
+                return [
+                    'message'=>'Failed to remove, not created by you!',
+                    'error'=>true
+                ];
+            }
+
+            $old->delete();
+
+            return [
+                'message'=>'Tweet removed successfully.',
+                'error'=>false
+            ];
+
+
+        } catch (\Throwable $th) {
+            return $this->getValidationErrors($th);
+        }
+
     }
+
 }
