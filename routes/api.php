@@ -39,6 +39,7 @@ Route::resource('tweet', TweetController::class);
 Route::resource('tweet-comment', TweetCommentController::class);
 Route::resource('user-login', UserLoginController::class);
 Route::resource('user-register', UserRegisterController::class);
+Route::resource('user', UserRegisterController::class);
 
 Route::get('profiles', function () {
     return Profile::all();

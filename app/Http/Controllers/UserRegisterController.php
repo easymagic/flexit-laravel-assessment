@@ -18,6 +18,9 @@ class UserRegisterController extends Controller
     public function index()
     {
         //
+        return [
+            'data'=>User::query()->get()
+        ];
     }
 
     /**
