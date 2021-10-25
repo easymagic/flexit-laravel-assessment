@@ -61,7 +61,7 @@ class UserLoginController extends Controller
 
           return [
               'message'=>'Login successful.',
-              'data'=>$auth,
+              'data'=>Auth::user(),
               'error'=>false
           ];
 
