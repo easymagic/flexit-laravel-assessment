@@ -49,7 +49,7 @@ class UserRegisterController extends Controller
         try {
             $data = request()->validate([
                 'email'=>'required',
-                'password'=>'required',
+                'password'=>'confirmed',
                 'name'=>'required'
             ]);
 
