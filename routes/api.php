@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\TweetCommentController;
+use App\Http\Controllers\TweetController;
+use App\Http\Controllers\UserLoginController;
+use App\Http\Controllers\UserRegisterController;
 use App\Models\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
@@ -31,6 +35,10 @@ Route::get('migrate-fresh', function () {
 
 });
 
+Route::resource('tweet', TweetController::class);
+Route::resource('tweet-comment', TweetCommentController::class);
+Route::resource('user-login', UserLoginController::class);
+Route::resource('user-register', UserRegisterController::class);
 
 Route::get('profiles', function () {
     return Profile::all();
